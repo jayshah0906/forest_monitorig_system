@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# FastAPI
+.env
+
+# Data
+data/raw/*.tif
+data/processed/*
+*.shp
+*.shx
+*.dbf
+*.prj
+
+# ML Models
+ml_models/*.pth
+ml_models/*.h5
+ml_models/*.pkl
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
