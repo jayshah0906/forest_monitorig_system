@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forest Monitoring System - Dang District</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+</head>
+<body>
+    <!-- Landing Page -->
+    <div id="landing-page" class="landing-page">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <span class="logo-icon">🌲</span>
+                    <span class="logo-text">Forest Monitor</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">AI-Driven Forest Monitoring</h1>
+                <p class="hero-subtitle">Advanced analytics for Dang District, Gujarat</p>
+                <p class="hero-description">
+                    Monitor forest health, count trees, and identify species using cutting-edge AI technology
+                </p>
+                <button class="cta-button" onclick="goToApp()">
+                    Start Monitoring
+                    <span class="arrow">→</span>
+                </button>
+            </div>
+            <div class="hero-image">
+                <div class="forest-illustration">
+                    <div class="tree tree-1">🌲</div>
+                    <div class="tree tree-2">🌳</div>
+                    <div class="tree tree-3">🌲</div>
+                    <div class="tree tree-4">🌳</div>
+                    <div class="tree tree-5">🌲</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌲</div>
+                    <h3>Tree Counting</h3>
+                    <p>Automated tree detection with >85% accuracy using advanced ML models</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌿</div>
+                    <h3>Species Identification</h3>
+                    <p>Identify 5 major species: Teak, Bamboo, Sal, Mango, and Neem</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Health Assessment</h3>
+                    <p>NDVI-based forest health monitoring and analytics</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🗺️</div>
+                    <h3>Interactive Maps</h3>
+                    <p>Select any region and get instant analysis results</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <h2 class="section-title">About Dang District</h2>
+            <p class="about-text">
+                Dang district in Gujarat is known for its rich forest cover and biodiversity. 
+                Our system helps monitor and protect these valuable natural resources using 
+                state-of-the-art AI and satellite imagery analysis.
+            </p>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2026 Forest Monitoring System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Main Application -->
+    <div id="app-page" class="app-page" style="display: none;">
+        <div class="app-header">
+            <div class="app-logo" onclick="goToLanding()">
+                <span class="logo-icon">🌲</span>
+                <span class="logo-text">Forest Monitor</span>
+            </div>
+            <h1 class="app-title">Dang District Forest Analysis</h1>
+        </div>
+
+        <div class="app-container">
+            <!-- Map Section -->
+            <div class="map-section">
+                <div class="map-controls">
+                    <button id="draw-polygon-btn" class="control-btn">
+                        <span>📐</span> Draw Region
+                    </button>
+                    <button id="clear-polygon-btn" class="control-btn secondary">
+                        <span>🗑️</span> Clear
+                    </button>
+                    <button id="analyze-btn" class="control-btn primary" disabled>
+                        <span>🔍</span> Analyze Forest
+                    </button>
+                </div>
+                <div id="map" class="map-container"></div>
+                <div class="map-info">
+                    <p>📍 Draw a polygon on the map to select a region for analysis</p>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div id="loading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing forest data...</p>
+                </div>
+
+                <div id="results" class="results" style="display: none;">
+                    <h2 class="results-title">Analysis Results</h2>
+                    
+                    <!-- KPIs -->
+                    <div class="kpis-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-icon">🌲</div>
+                            <div class="kpi-value" id="tree-count">-</div>
+                            <div class="kpi-label">Total Trees</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon">📏</div>
+                            <div class="kpi-value" id="area">-</div>
+                            <div class="kpi-label">Area (hectares)</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon">📊</div>
+                            <div class="kpi-value" id="density">-</div>
+                            <div class="kpi-label">Trees/Hectare</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon">💚</div>
+                            <div class="kpi-value" id="health-score">-</div>
+                            <div class="kpi-label">Health Score</div>
+                        </div>
+                    </div>
+
+                    <!-- Species Distribution -->
+                    <div class="species-section">
+                        <h3 class="subsection-title">Species Distribution</h3>
+                        <div id="species-chart" class="species-chart"></div>
+                    </div>
+
+                    <!-- NDVI Stats -->
+                    <div class="ndvi-section">
+                        <h3 class="subsection-title">Forest Health (NDVI)</h3>
+                        <div class="ndvi-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Mean:</span>
+                                <span class="stat-value" id="ndvi-mean">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Min:</span>
+                                <span class="stat-value" id="ndvi-min">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Max:</span>
+                                <span class="stat-value" id="ndvi-max">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Status:</span>
+                                <span class="stat-value" id="health-status">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tree Locations -->
+                    <div class="trees-section">
+                        <h3 class="subsection-title">Detected Trees</h3>
+                        <div id="tree-list" class="tree-list"></div>
+                    </div>
+                </div>
+
+                <div id="error" class="error" style="display: none;">
+                    <div class="error-icon">⚠️</div>
+                    <h3>Analysis Failed</h3>
+                    <p id="error-message"></p>
+                    <button onclick="hideError()" class="control-btn">Try Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
