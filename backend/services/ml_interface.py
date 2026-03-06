@@ -7,7 +7,7 @@ from pathlib import Path
 class MLInterface:
     """
     Interface to ML models
-    Uses forest density estimation for Sentinel-2 satellite imagery
+    Uses Random Forest machine learning for forest density prediction
     """
     
     def __init__(self):
@@ -16,22 +16,23 @@ class MLInterface:
         self._load_models()
     
     def _load_models(self):
-        """Load forest estimation model"""
+        """Load Random Forest ML model"""
         try:
             # Add ml_models to path
             ml_models_path = Path("ml_models")
             if ml_models_path.exists():
                 sys.path.insert(0, str(ml_models_path.absolute()))
             
-            # Import forest estimator
-            from forest_estimator import ForestEstimator
+            # Import Random Forest model
+            from random_forest_model import RandomForestForestModel
             
-            self.forest_estimator = ForestEstimator()
+            self.forest_estimator = RandomForestForestModel()
             
-            print("✓ Forest estimation model loaded successfully")
-            print("✓ Using NDVI-based density estimation (optimized for Sentinel-2)")
+            print("✓ Random Forest ML model loaded successfully")
+            print("✓ Using scikit-learn Random Forest Regressor")
+            print("✓ Model trained on 500 forest samples")
         except Exception as e:
-            print(f"⚠ Warning: Could not load forest estimator: {e}")
+            print(f"⚠ Warning: Could not load Random Forest model: {e}")
             raise
     
     def analyze(self, rgb_image: np.ndarray, nir_band: np.ndarray, 
@@ -54,7 +55,7 @@ class MLInterface:
                 "Forest estimator not loaded! Cannot perform analysis."
             )
         
-        print("Running forest density estimation (NDVI-based)")
+        print("Running Random Forest ML prediction")
         
         # Estimate forest characteristics
         estimation_result = self.forest_estimator.estimate_forest(
