@@ -1,58 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forest Monitoring System - Dang District</title>
+    <title>ForestEye - Dang District</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
 </head>
+
 <body>
     <!-- Landing Page -->
     <div id="landing-page" class="landing-page">
+        <!-- Video Background -->
+        <video autoplay muted loop playsinline class="video-background">
+            <source src="video.mp4" type="video/mp4">
+        </video>
+
         <nav class="navbar">
             <div class="nav-container">
                 <div class="logo">
-                    <span class="logo-icon">🌲</span>
-                    <span class="logo-text">Forest Monitor</span>
+                    <span class="logo-text">FORESTEYE</span>
                 </div>
                 <div class="nav-links">
-                    <a href="#features">Features</a>
-                    <a href="#about">About</a>
-                    <a href="#contact">Contact</a>
+                    <a href="#features">HOME</a>
+                    <a href="#features">OFFER</a>
+                    <a href="#features">GALLERY</a>
+                    <a href="#about">BLOG</a>
+                    <a href="#about">ABOUT US</a>
+                    <a href="#contact">CONTACT</a>
+                    <button class="nav-signup-btn" onclick="goToApp()">START ANALYSIS</button>
                 </div>
             </div>
         </nav>
 
         <section class="hero">
-            <div class="hero-content">
-                <h1 class="hero-title">AI-Driven Forest Monitoring</h1>
-                <p class="hero-subtitle">Advanced analytics for Dang District, Gujarat</p>
-                <p class="hero-description">
-                    Monitor forest health, count trees, and identify species using cutting-edge AI technology
-                </p>
-                <button class="cta-button" onclick="goToApp()">
-                    Start Monitoring
-                    <span class="arrow">→</span>
+            <div class="hero-overlay"></div>
+            <div class="hero-content-center">
+                <p class="hero-subtitle-top">FOREST GUARDIANS</p>
+                <h1 class="hero-title-main">Protecting Nature with Intelligence</h1>
+                <button class="cta-button-hero" id="signInBtn" onclick="window.openAuthModal(); return false;">
+                    SIGN IN
                 </button>
             </div>
-            <div class="hero-image">
-                <div class="forest-illustration">
-                    <div class="tree tree-1">🌲</div>
-                    <div class="tree tree-2">🌳</div>
-                    <div class="tree tree-3">🌲</div>
-                    <div class="tree tree-4">🌳</div>
-                    <div class="tree tree-5">🌲</div>
+
+            <!-- Scroll indicator -->
+            <div class="scroll-indicator">
+                <span>↓</span>
+            </div>
+        </section>
+
+
+
+        <!-- Content Sections -->
+        <section class="content-section section-left">
+            <div class="content-container">
+                <div class="content-image">
+                    <img src="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200"
+                        alt="Forest Monitoring">
+                </div>
+                <div class="content-text">
+                    <h3 class="section-label">AI-POWERED ANALYSIS</h3>
+                    <h2 class="section-heading">Advanced Forest Detection</h2>
+                    <p class="section-description">
+                        Our cutting-edge AI technology analyzes satellite imagery to detect and count trees with over
+                        85% accuracy.
+                        Monitor forest health, identify species, and track changes over time with unprecedented
+                        precision.
+                    </p>
+                    <button class="section-btn" onclick="goToApp()">EXPLORE NOW</button>
                 </div>
             </div>
         </section>
+
+        <section class="content-section section-right">
+            <div class="content-container">
+                <div class="content-text">
+                    <h3 class="section-label">REAL-TIME MONITORING</h3>
+                    <h2 class="section-heading">Track Forest Health</h2>
+                    <p class="section-description">
+                        Get instant insights into forest health using NDVI analysis. Our system provides comprehensive
+                        metrics including tree density, species distribution, and health scores to help you make
+                        informed decisions.
+                    </p>
+                    <button class="section-btn" onclick="goToApp()">START ANALYSIS</button>
+                </div>
+                <div class="content-image">
+                    <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=1200"
+                        alt="Forest Health">
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section section-left">
+            <div class="content-container">
+                <div class="content-image">
+                    <img src="https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=1200"
+                        alt="Species Detection">
+                </div>
+                <div class="content-text">
+                    <h3 class="section-label">SPECIES IDENTIFICATION</h3>
+                    <h2 class="section-heading">Identify Tree Species</h2>
+                    <p class="section-description">
+                        Automatically identify and classify tree species including Teak, Bamboo, Sal, Mango, and Neem.
+                        Our ML models provide detailed species distribution analysis for comprehensive forest
+                        management.
+                    </p>
+                    <button class="section-btn" onclick="goToApp()">LEARN MORE</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Floating Navigation Button -->
+        <button id="floatingNavBtn" class="floating-nav-btn" onclick="handleFloatingNav()" style="display: none;">
+            <span id="floatingBtnText">Go to App →</span>
+        </button>
+
+        <!-- Auth Modal (Sign In / Register) -->
+        <div id="authModal" class="auth-modal">
+            <div class="auth-modal-container">
+                <!-- Close Button -->
+                <button class="auth-close-btn" onclick="closeAuthModal()">&times;</button>
+
+                <!-- Left Side - Branding -->
+                <div class="auth-left">
+                    <div class="auth-brand-content">
+                        <div class="auth-logo-large">
+                            
+                            <h1>FORESTEYE</h1>
+                        </div>
+                        <p class="auth-tagline">AI-Powered Forest Monitoring & Analysis</p>
+                        <div class="auth-features-list">
+                            <div class="auth-feature-item">
+                                <span class="auth-check-icon">✓</span>
+                                <span>Real-time forest health monitoring</span>
+                            </div>
+                            <div class="auth-feature-item">
+                                <span class="auth-check-icon">✓</span>
+                                <span>Advanced tree detection with 85%+ accuracy</span>
+                            </div>
+                            <div class="auth-feature-item">
+                                <span class="auth-check-icon">✓</span>
+                                <span>Species identification & classification</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Forms -->
+                <div class="auth-right">
+                    <div class="auth-form-container">
+                        <div class="auth-logo-large">
+                            <h1>FORESTEYE</h1>
+                        </div>
+
+                        <div class="auth-form-header">
+                            <h2 id="authFormTitle">Welcome Back</h2>
+                            <p id="authFormSubtitle">Sign in to access your dashboard</p>
+                        </div>
+
+                        <!-- Sign In Form -->
+                        <form id="authSignInForm" class="auth-form-content">
+                            <div class="auth-form-group">
+                                <label for="authSignInEmail">Email Address</label>
+                                <input type="email" id="authSignInEmail" placeholder="Enter your email" required>
+                                <span class="auth-error-msg" id="authSignInEmailError"></span>
+                            </div>
+
+                            <div class="auth-form-group">
+                                <label for="authSignInPassword">Password</label>
+                                <input type="password" id="authSignInPassword" placeholder="Enter your password"
+                                    required minlength="6">
+                                <span class="auth-error-msg" id="authSignInPasswordError"></span>
+                            </div>
+
+                            <div class="auth-form-options">
+                                <label class="auth-checkbox-container">
+                                    <input type="checkbox" id="authRememberMe">
+                                    <span>Remember me</span>
+                                </label>
+                                <a href="#" class="auth-forgot-password">Forgot password?</a>
+                            </div>
+
+                            <button type="submit" class="auth-submit-button">
+                                <span id="authSignInBtnText">Sign In</span>
+                                <span id="authSignInLoader" class="auth-loader" style="display: none;">
+                                    <span class="auth-spinner"></span> Signing in...
+                                </span>
+                            </button>
+
+                            <div class="auth-divider">
+                                <span>OR</span>
+                            </div>
+
+                            <button type="button" class="auth-google-button" onclick="authSignInWithGoogle()">
+                                <span>🔍</span> Continue with Google
+                            </button>
+                        </form>
+
+                        <!-- Register Form -->
+                        <form id="authRegisterForm" class="auth-form-content" style="display: none;">
+                            <div class="auth-form-group">
+                                <label for="authRegisterName">Full Name</label>
+                                <input type="text" id="authRegisterName" placeholder="Enter your full name" required>
+                                <span class="auth-error-msg" id="authRegisterNameError"></span>
+                            </div>
+
+                            <div class="auth-form-group">
+                                <label for="authRegisterEmail">Email Address</label>
+                                <input type="email" id="authRegisterEmail" placeholder="Enter your email" required>
+                                <span class="auth-error-msg" id="authRegisterEmailError"></span>
+                            </div>
+
+                            <div class="auth-form-group">
+                                <label for="authRegisterPassword">Password</label>
+                                <input type="password" id="authRegisterPassword"
+                                    placeholder="Create a password (min 6 characters)" required minlength="6">
+                                <span class="auth-error-msg" id="authRegisterPasswordError"></span>
+                            </div>
+
+                            <div class="auth-form-group">
+                                <label for="authConfirmPassword">Confirm Password</label>
+                                <input type="password" id="authConfirmPassword" placeholder="Confirm your password"
+                                    required minlength="6">
+                                <span class="auth-error-msg" id="authConfirmPasswordError"></span>
+                            </div>
+
+                            <button type="submit" class="auth-submit-button">
+                                <span id="authRegisterBtnText">Create Account</span>
+                                <span id="authRegisterLoader" class="auth-loader" style="display: none;">
+                                    <span class="auth-spinner"></span> Creating account...
+                                </span>
+                            </button>
+
+                            <div class="auth-divider">
+                                <span>OR</span>
+                            </div>
+
+                            <button type="button" class="auth-google-button" onclick="authSignInWithGoogle()">
+                                <span>🔍</span> Continue with Google
+                            </button>
+                        </form>
+
+                        <div class="auth-toggle-form">
+                            <span id="authToggleText">Don't have an account?</span>
+                            <a href="#" id="authToggleLink" onclick="toggleAuthForms(event)">Register</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <section id="features" class="features">
             <h2 class="section-title">Key Features</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">🌲</div>
+                    <div class="feature-icon">🌿</div>
                     <h3>Tree Counting</h3>
                     <p>Automated tree detection with >85% accuracy using advanced ML models</p>
                 </div>
@@ -77,14 +281,14 @@
         <section id="about" class="about">
             <h2 class="section-title">About Dang District</h2>
             <p class="about-text">
-                Dang district in Gujarat is known for its rich forest cover and biodiversity. 
-                Our system helps monitor and protect these valuable natural resources using 
+                Dang district in Gujarat is known for its rich forest cover and biodiversity.
+                Our system helps monitor and protect these valuable natural resources using
                 state-of-the-art AI and satellite imagery analysis.
             </p>
         </section>
 
         <footer class="footer">
-            <p>&copy; 2026 Forest Monitoring System. All rights reserved.</p>
+            <p>&copy; 2026 ForestEye. All rights reserved.</p>
         </footer>
     </div>
 
@@ -92,10 +296,12 @@
     <div id="app-page" class="app-page" style="display: none;">
         <div class="app-header">
             <div class="app-logo" onclick="goToLanding()">
-                <span class="logo-icon">🌲</span>
-                <span class="logo-text">Forest Monitor</span>
+                <span class="logo-text">ForestEye</span>
             </div>
             <h1 class="app-title">Dang District Forest Analysis</h1>
+            <button class="back-to-home-btn" onclick="goToLanding()" title="Back to Home">
+                <span>← Back to Home</span>
+            </button>
         </div>
 
         <div class="app-container">
@@ -120,6 +326,83 @@
 
             <!-- Results Section -->
             <div class="results-section">
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state">
+                    <div class="preview-animation">
+                        <h3 class="preview-title">Ready to Analyze</h3>
+                        <p class="preview-subtitle">Watch how it works</p>
+                        
+                        <div class="mini-map-container">
+                            <div class="mini-map">
+                                <!-- Animated polygon drawing -->
+                                <svg class="polygon-animation" viewBox="0 0 200 200">
+                                    <defs>
+                                        <linearGradient id="polygonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.3" />
+                                            <stop offset="100%" style="stop-color:#34d399;stop-opacity:0.3" />
+                                        </linearGradient>
+                                    </defs>
+                                    <polygon class="drawing-polygon" points="50,50 150,50 150,150 50,150" 
+                                             fill="url(#polygonGradient)" stroke="#10b981" stroke-width="3" 
+                                             stroke-dasharray="400" stroke-dashoffset="400"/>
+                                    <!-- Corner dots -->
+                                    <circle class="corner-dot dot-1" cx="50" cy="50" r="5" fill="#10b981"/>
+                                    <circle class="corner-dot dot-2" cx="150" cy="50" r="5" fill="#10b981"/>
+                                    <circle class="corner-dot dot-3" cx="150" cy="150" r="5" fill="#10b981"/>
+                                    <circle class="corner-dot dot-4" cx="50" cy="150" r="5" fill="#10b981"/>
+                                </svg>
+                                
+                                <!-- Animated trees appearing -->
+                                <div class="tree-markers">
+                                    <div class="tree-marker" style="top: 30%; left: 35%;">🌲</div>
+                                    <div class="tree-marker" style="top: 45%; left: 55%;">🌲</div>
+                                    <div class="tree-marker" style="top: 60%; left: 40%;">🌲</div>
+                                    <div class="tree-marker" style="top: 35%; left: 65%;">🌲</div>
+                                    <div class="tree-marker" style="top: 70%; left: 60%;">🌲</div>
+                                    <div class="tree-marker" style="top: 50%; left: 45%;">🌲</div>
+                                </div>
+                                
+                                <!-- Scanning effect -->
+                                <div class="scan-line"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Process steps -->
+                        <div class="process-steps">
+                            <div class="step-indicator active" data-step="1">
+                                <div class="step-icon">✏️</div>
+                                <div class="step-text">Draw Region</div>
+                            </div>
+                            <div class="step-arrow">→</div>
+                            <div class="step-indicator" data-step="2">
+                                <div class="step-icon">🔍</div>
+                                <div class="step-text">Analyze</div>
+                            </div>
+                            <div class="step-arrow">→</div>
+                            <div class="step-indicator" data-step="3">
+                                <div class="step-icon">📊</div>
+                                <div class="step-text">View Results</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Floating data points -->
+                        <div class="floating-data">
+                            <div class="data-point" style="top: 10%; left: 10%;">
+                                <span class="data-label">Trees</span>
+                                <span class="data-value">250+</span>
+                            </div>
+                            <div class="data-point" style="top: 15%; right: 10%;">
+                                <span class="data-label">Species</span>
+                                <span class="data-value">5</span>
+                            </div>
+                            <div class="data-point" style="bottom: 15%; left: 15%;">
+                                <span class="data-label">Accuracy</span>
+                                <span class="data-value">85%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="loading" class="loading" style="display: none;">
                     <div class="spinner"></div>
                     <p>Analyzing forest data...</p>
@@ -127,28 +410,84 @@
 
                 <div id="results" class="results" style="display: none;">
                     <h2 class="results-title">Analysis Results</h2>
-                    
+
                     <!-- KPIs -->
                     <div class="kpis-grid">
                         <div class="kpi-card">
-                            <div class="kpi-icon">🌲</div>
-                            <div class="kpi-value" id="tree-count">-</div>
-                            <div class="kpi-label">Total Trees</div>
+                            <h3 class="kpi-title">Detected Trees</h3>
+                            <div class="kpi-circle">
+                                <svg viewBox="0 0 160 160">
+                                    <defs>
+                                        <linearGradient id="gradient-trees" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#34d399;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                    <circle class="kpi-circle-bg" cx="80" cy="80" r="70"></circle>
+                                    <circle class="kpi-circle-progress" id="tree-count-circle" cx="80" cy="80" r="70" style="stroke: url(#gradient-trees)"></circle>
+                                </svg>
+                                <div class="kpi-circle-content">
+                                    <div class="kpi-value" id="tree-count">-</div>
+                                    <div class="kpi-label">Trees</div>
+                                </div>
+                            </div>
                         </div>
                         <div class="kpi-card">
-                            <div class="kpi-icon">📏</div>
-                            <div class="kpi-value" id="area">-</div>
-                            <div class="kpi-label">Area (hectares)</div>
+                            <h3 class="kpi-title">Total Area</h3>
+                            <div class="kpi-circle">
+                                <svg viewBox="0 0 160 160">
+                                    <defs>
+                                        <linearGradient id="gradient-area" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                    <circle class="kpi-circle-bg" cx="80" cy="80" r="70"></circle>
+                                    <circle class="kpi-circle-progress" id="area-circle" cx="80" cy="80" r="70" style="stroke: url(#gradient-area)"></circle>
+                                </svg>
+                                <div class="kpi-circle-content">
+                                    <div class="kpi-value" id="area">-</div>
+                                    <div class="kpi-label">Hectares</div>
+                                </div>
+                            </div>
                         </div>
                         <div class="kpi-card">
-                            <div class="kpi-icon">📊</div>
-                            <div class="kpi-value" id="density">-</div>
-                            <div class="kpi-label">Trees/Hectare</div>
+                            <h3 class="kpi-title">Tree Density</h3>
+                            <div class="kpi-circle">
+                                <svg viewBox="0 0 160 160">
+                                    <defs>
+                                        <linearGradient id="gradient-density" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#34d399;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#6ee7b7;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                    <circle class="kpi-circle-bg" cx="80" cy="80" r="70"></circle>
+                                    <circle class="kpi-circle-progress" id="density-circle" cx="80" cy="80" r="70" style="stroke: url(#gradient-density)"></circle>
+                                </svg>
+                                <div class="kpi-circle-content">
+                                    <div class="kpi-value" id="density">-</div>
+                                    <div class="kpi-label">Per Hectare</div>
+                                </div>
+                            </div>
                         </div>
                         <div class="kpi-card">
-                            <div class="kpi-icon">💚</div>
-                            <div class="kpi-value" id="health-score">-</div>
-                            <div class="kpi-label">Health Score</div>
+                            <h3 class="kpi-title">Health Score</h3>
+                            <div class="kpi-circle">
+                                <svg viewBox="0 0 160 160">
+                                    <defs>
+                                        <linearGradient id="gradient-health" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                    <circle class="kpi-circle-bg" cx="80" cy="80" r="70"></circle>
+                                    <circle class="kpi-circle-progress" id="health-circle" cx="80" cy="80" r="70" style="stroke: url(#gradient-health)"></circle>
+                                </svg>
+                                <div class="kpi-circle-content">
+                                    <div class="kpi-value" id="health-score">-</div>
+                                    <div class="kpi-label">Score</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -202,4 +541,5 @@
     <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>

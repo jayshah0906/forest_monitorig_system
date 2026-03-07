@@ -7,7 +7,7 @@ from backend.api.routes import router
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
-    description="AI-Driven Forest Monitoring & Analytics API for Dang District, Gujarat"
+    description="ForestEye: AI-Driven Forest Monitoring & Analytics API for Dang District, Gujarat"
 )
 
 # CORS middleware - allows frontend to connect
@@ -28,7 +28,7 @@ app.include_router(router, prefix=settings.API_V1_PREFIX)
 async def root():
     """Root endpoint with API information"""
     return {
-        "message": "Forest Monitoring API",
+        "message": "ForestEye API",
         "version": settings.VERSION,
         "docs": "/docs",
         "endpoints": {

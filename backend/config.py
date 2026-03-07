@@ -7,7 +7,7 @@ import json
 class Settings(BaseSettings):
     # API Settings
     API_V1_PREFIX: str = "/api/v1"
-    PROJECT_NAME: str = "Forest Monitoring API"
+    PROJECT_NAME: str = "ForestEye API"
     VERSION: str = "1.0.0"
     
     # CORS
